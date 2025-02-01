@@ -1,0 +1,38 @@
+# https://leetcode.com/problems/reverse-words-in-a-string/description/?envType=study-plan-v2&envId=leetcode-75
+# 151. Reverse Words in a String
+
+char * reverseWords(char * s){
+    int len = strlen(s); //s의 총길이
+    char *result = (char*)malloc((len+1)*sizeof(char)); 
+    //결과를 담을 allocation
+
+    int result_start =0;
+
+    for (int i = len - 1; i >= 0; i--) {
+        if (s[i] != ' ') {
+            int end = i; // 끝에서부터 보면서 빈칸이 아닌 문자가 나온 첫번째를 찾는다
+            
+            while (i >= 0 && s[i] != ' ') {
+                i--; // 빈칸이 나올때까지 앞으로 간다
+            }
+            
+            int start = i + 1; //빈칸이 나오면 start를 i+1로 설정한다
+            
+            
+            for (int j = start; j <= end; j++) {
+                result[result_start++] = s[j];
+            } //지금까지 나온 단어를 result에 넣어준다
+            
+            if (i > 0) {
+                result[result_start++] = ' '; // 아직 단어가 남아있다면 띄어쓰기 더해주기
+            }
+        }
+    }
+    if (result[result_start - 1] == ' ') {
+        result[result_start - 1] = '\0'; //마지막에 띄어쓰기가 들어있다면 없앤다
+    } else {
+        result[result_start] = '\0'; // null terminator
+    }
+    
+    return result;
+}
