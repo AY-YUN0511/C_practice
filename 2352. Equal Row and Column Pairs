@@ -1,0 +1,40 @@
+# https://leetcode.com/problems/equal-row-and-column-pairs/description/?envType=study-plan-v2&envId=leetcode-75
+# 2352. Equal Row and Column Pairs
+
+int equalPairs(int** grid, int gridSize, int* gridColSize) {
+    int new[gridSize][gridSize] ; //뒤짚을 array 형성
+    for (int i=0;i<gridSize;i++){
+        for (int j=0;j<gridSize;j++){
+            new[i][j] = grid[j][i];
+        }
+    }
+
+    int count = 0;
+    int i= 0;//i는 new의 row
+    int j=0;//j는 new&grid의 column
+    int k=0;//k는 grid의 row
+    while (i < gridSize && j < gridSize) {
+        if (grid[i][j] != new[k][j] && k < gridSize) {
+            k++;
+            j = 0;
+        } //j가 다르면 뒤를 더 볼 필요가 없으니까 다음 줄 확인;
+        else if (j == gridSize - 1 && k < gridSize) {
+            count++;
+            j = 0;
+            k++;
+        } //j가 같은채로 끝까지 왔으므로 count를 더하고 다음 줄 확인;
+        else if (grid[i][j] == new[k][j] && k < gridSize) {
+            j++;
+        } //[i][j]가 같으면 끝까지 같은지 j만 늘리면서 확인
+        
+        // Reset k and increment i when k reaches gridSize
+        if (k == gridSize) {
+            k = 0;
+            i++;
+        }
+    }
+    
+    return count;
+    
+    
+}
