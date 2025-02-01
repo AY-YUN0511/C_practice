@@ -1,0 +1,62 @@
+# https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/?envType=study-plan-v2&envId=leetcode-75
+# 1161. Maximum Level Sum of a Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+int maxLevelSum(struct TreeNode* root) {
+    if (!root) {
+        return 0;
+    }
+
+    int level = 0;     // 
+    int maxSum = -100000;  // 일단 가장 작은 값으로 initialization
+    int resultLevel = 0;  // 결과가 될 층
+
+    //queue에 treenode를 저장한다
+    struct TreeNode** queue = (struct TreeNode**)malloc(sizeof(struct TreeNode*) * 10001);
+    //10000이 node의 최대개수니까 일단 그냥 많이 alloc
+    int front = 0;
+    int rear = 0;
+
+    // Enqueue the root.
+    queue[rear++] = root;
+
+    while (front < rear) {
+        int currentLevelSize = rear - front;
+        int currentLevelSum = 0;
+
+        for (int i = 0; i < currentLevelSize; i++) {
+            struct TreeNode* currentNode = queue[front++];
+            //앞에서부터 지정된 범위 안의 노드를 current node로 지정하고 하나씩 확인한다
+
+            currentLevelSum += currentNode->val;
+            //노드 value를 더해서 currentsum으로 만들어준다
+
+            if (currentNode->left) {
+                queue[rear++] = currentNode->left;
+            }
+            if (currentNode->right) {
+                queue[rear++] = currentNode->right;
+            }//queue에 양쪽을 집어넣는다.
+        }
+
+        if (currentLevelSum > maxSum) {
+            maxSum = currentLevelSum;
+            resultLevel = level + 1;  // Adjust the level (levels are 1-based).
+        } //max보다 크면 max를 고쳐준다
+        //resultle
+
+        level++;//다음 레벨 확인
+    }
+
+    free(queue);  
+
+    return resultLevel;
+    
+}
