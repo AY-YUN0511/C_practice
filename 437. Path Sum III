@@ -1,0 +1,47 @@
+# https://leetcode.com/problems/path-sum-iii/description/?envType=study-plan-v2&envId=leetcode-75
+# 437. Path Sum III
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+int isSum(struct TreeNode* root, int targetSum, long sum) {
+    //Line 16: Char 9: runtime error: signed integer overflow: 
+		//2000000000 + 1000000000 cannot be represented in type 'int' [solution.c] 
+		// -> long sum
+
+    if (root == NULL) {
+        return 0;
+    }
+
+    sum += root->val;
+    int count =0;
+    if (sum == targetSum) {
+        count++;
+    }//rootval을 더해서 나오는 sum이 targetsum과 같아지면 count 증가시킨다
+
+    count += isSum(root->left, targetSum, sum);
+    count += isSum(root->right, targetSum, sum);
+    //왼쪽 오른쪽에 모두 진행
+    return count;
+}
+
+
+int pathSum(struct TreeNode* root, int targetSum) {
+    if (root == NULL) {
+        return 0;
+    }
+
+    int count = isSum(root, targetSum, 0);//맨 앞의 root에 대해서 확인
+
+    count+= pathSum(root->left, targetSum);
+    count+= pathSum(root->right, targetSum);
+    //양쪽을 타고 내려가면서 count에 더해준다
+    return count;
+}
