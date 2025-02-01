@@ -1,0 +1,37 @@
+# https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/?envType=study-plan-v2&envId=leetcode-75
+# 236. Lowest Common Ancestor of a Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q) {
+    if(root==NULL){
+        return NULL;
+    }
+
+    if(root==p || root==q){
+        return root;
+    } //root가 p이거나 q이면 바로 root를 return
+
+    struct TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    struct TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+    // p,q는 root가 아니니까 찾을때까지 recursive로 내려간다
+
+    if(left!=NULL && right!=NULL){
+        return root;
+    } // p,q 가 양쪽에 있는 경우니까 현재의 root를 return
+
+    if (left != NULL) {
+        return left;
+        } 
+    else {
+        return right;
+    } //하나만 있으면 그 값을 return
+
+}
