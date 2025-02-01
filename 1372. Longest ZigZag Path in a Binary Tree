@@ -1,0 +1,45 @@
+# https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree?envType=study-plan-v2&envId=leetcode-75
+# 1372. Longest ZigZag Path in a Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+int longestZigZag(struct TreeNode* root) {
+     int maxpath = -1;
+
+    // Define a recursive function to perform DFS
+    void dfs(struct TreeNode* node, int count, bool left) {
+        if (!node) return;
+
+        if (maxpath<count){
+            maxpath = count;
+        }
+        
+
+        if (left) {
+            dfs(node->left, count + 1, false); 
+						//왼쪽으로 가야할 차례니까 이전 count에 1을 더해준다
+            dfs(node->right, 1, true);//새로 1부터 시작한다
+        } else {
+            dfs(node->left, 1, false);
+            dfs(node->right, count + 1, true);
+        }
+    }
+
+    // Check if the root is NULL
+    if (root == NULL) {
+        return 0;
+    }
+
+    // Start DFS from the root
+    dfs(root, 0, true);
+
+    // Return the maximum ZigZag path length
+    return maxpath;
+}
