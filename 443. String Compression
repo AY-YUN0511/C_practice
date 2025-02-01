@@ -1,0 +1,55 @@
+# https://leetcode.com/problems/string-compression/?envType=study-plan-v2&envId=leetcode-75
+# 443. String Compression
+
+#define TO_CHAR(d) ('0'+(d))
+//simply add '0' to the integer value to convert it to the corresponding character.
+
+int compress(char *chars, int charsSize) {
+    int read = 0; //읽기 시작하는 부분을 확인하는 index
+    int write = 0; //같은 문자가 그만 나올때 그 내용을 저장하는 index
+
+    if (charsSize ==1){
+        return 1;
+    }
+
+    else {
+        while (read<charsSize&& write<charsSize){
+            int count = 1;
+            char current = chars[read];
+            read = read+1;
+            
+            while(read< charsSize && chars[read]==current) {
+                count = count+1; //같은 문자가 몇번 나오는지 count를 센다
+                read = read+1;
+            }
+
+            chars[write] = current; //달라지면 chars에 문자 기입
+            write = write +1;  
+            
+
+            if (count>1){
+                if (count <10 && write<charsSize){
+                    chars[write] = TO_CHAR(count);
+                    write = write +1 ;
+                }//10보다 작으면 그냥 넣는다
+                else {
+                    int divisor = 1;
+                    while (count / divisor >= 10){
+                        divisor *= 10;}
+                    while (divisor>=1){
+                    if (count/divisor <10 && write<charsSize) {
+                        chars[write] = TO_CHAR(count / divisor);
+                        count = count - (count/divisor) * divisor;
+                        divisor /= 10;
+                        write = write+1;
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        return write;     
+        }
+            
+    }
