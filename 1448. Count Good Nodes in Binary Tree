@@ -1,0 +1,41 @@
+# https://leetcode.com/problems/count-good-nodes-in-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75
+# 1448. Count Good Nodes in Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+int good(struct TreeNode* root, int max) {
+    if (root == NULL) {
+        return 0;
+    }
+
+    int count = 0;
+
+    if (root->val >= max) {
+        max = root->val;
+        count++;
+    } //max로 정한값보다 크면 max를 변경하고 goodnode를 찾아쓰니까 count++
+
+    count += good(root->left, max);
+    count += good(root->right, max);
+    //count를 return 하는거니까 왼쪽과 오른쪽을 보면서 roodnode가 있으면 count에 더해준다
+
+    return count;
+}
+
+int goodNodes(struct TreeNode* root) {
+    if (root == NULL) {
+        return 0;
+    }
+
+    int max = root->val; //처음에 max를 맨 앞 node의 val으로 initialize
+
+    int result = 1 + good(root->left, max) + good(root->right, max);
+    return result;
+}   //첫 노드는 좋은거니까 1에다가 왼쪽과 오른쪽 goodnode를 더해서 return
