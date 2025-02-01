@@ -1,0 +1,30 @@
+# https://leetcode.com/problems/counting-bits/description/?envType=study-plan-v2&envId=leetcode-75
+# 338. Counting Bits
+
+/*
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* countBits(int n, int* returnSize){
+    int *result = (int*)malloc((n+2)*sizeof(int)); 
+    *returnSize = n+1;
+    if(n==0){
+        result[0] = 0 ;
+        return result;}
+    else if (n==1){
+        result[0] = 0;
+        result[1] = 1; 
+        return result;
+    }
+    else {
+        result[0] = 0;
+        result[1] = 1;
+        result[2] = 1;
+        for (int i=3;i<=n;i++){
+            result[i] = result[i/2] + i%2;
+            }
+        }//result[9] = result[4] + 1
+        // 1001 = 100 + 1 
+        //result [11] = result[5] + 1
+        //1011 = 101 + 1 
+        return result;
+        }
