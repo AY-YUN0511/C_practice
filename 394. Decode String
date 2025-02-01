@@ -1,0 +1,70 @@
+# https://leetcode.com/problems/decode-string/description/?envType=study-plan-v2&envId=leetcode-75
+# 394. Decode String
+
+/**
+너무 어려운거아닙니까ㅠㅠㅠㅠ 
+*/
+
+char* decodeString(char* s) {
+    int length = strlen(s);
+    char* answer = (char*)malloc((10000) * sizeof(char)); // Allocate memory for the answer
+    int ai = 0; // Index for the answer
+    int i = 0; // Index for the input string
+
+    while (i < length) {
+        // 숫자가 있다면 얼마인지 확인
+        if (s[i] >= '0' && s[i] <= '9') {
+            int num = 0;
+            while (s[i] >= '0' && s[i] <= '9') { //숫자가 한 자리 이상일수도 있으니까 끝까지 확인
+                num = num * 10 + (s[i] - '0');
+                i++;
+            }
+
+            i++; // [ 기호
+
+            // Create a temporary string to store the content inside the brackets
+            char* temp = (char*)malloc((10000) * sizeof(char));
+            int ti = 0; // Index for the temporary string
+
+            // Use a stack to handle nested brackets
+            int bracketCount = 1;
+            while (i < length && bracketCount > 0) {
+                if (s[i] == '[') {
+                    bracketCount++; // [] 나오기 시작
+                } else if (s[i] == ']') {
+                    bracketCount--; // // [] 끝났음
+                }
+                
+                if (bracketCount > 0) {
+                    temp[ti++] = s[i];
+                }
+                i++;
+            }
+
+            // Null-terminate the temporary string
+            temp[ti] = '\0';
+
+            char* decodedTemp = decodeString(temp); //recursive
+
+            // Append the decoded content to the answer
+            for (int j = 0; j < num; j++) {
+                for (int k = 0; k < strlen(decodedTemp); k++) {
+                    answer[ai++] = decodedTemp[k];
+                }
+            }
+
+            // Free the temporary memory
+            free(temp);
+            free(decodedTemp);
+        } 
+        
+        else {
+            // If the current character is not a digit, simply add it to the answer
+            answer[ai++] = s[i++];
+        }
+    }
+
+    // Null-terminate the answer string
+    answer[ai] = '\0';
+    return answer;
+}
