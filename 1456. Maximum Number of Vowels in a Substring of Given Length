@@ -1,0 +1,29 @@
+# https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/?envType=study-plan-v2&envId=leetcode-75
+# 1456. Maximum Number of Vowels in a Substring of Given Length
+
+int maxVowels(char * s, int k){
+    int vowel_count = 0;
+    int max_vowel_count = 0;
+    for (int i=0;i<k;i++){
+        if (s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u' ){
+            vowel_count = vowel_count +1;            
+        }
+        max_vowel_count = vowel_count;
+    }// 첫번째 k개에 대해서 모음이 몇개인지 확인
+
+    //sliding window
+    for (int j=k;j<strlen(s);j++){
+        if (s[j]=='a' || s[j]=='e' || s[j]=='i' || s[j]=='o' || s[j]=='u' ){
+            vowel_count = vowel_count +1;     
+        }//새로 들어온 j번째가 모음이면 vowel_count 에 1 더해주기
+        if (s[j-k]=='a' || s[j-k]=='e' || s[j-k]=='i' || s[j-k]=='o' || s[j-k]=='u' ){
+            vowel_count = vowel_count -1;     
+        } //이전의 세트에서 나가는 j-k번째가 모음이면 vowel_count에서 1 빼주기
+        if (vowel_count>max_vowel_count){
+            max_vowel_count = vowel_count;
+        }
+
+    }
+   
+    return max_vowel_count;
+}
