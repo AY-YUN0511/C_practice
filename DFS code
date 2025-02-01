@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#define WHITE 0
+#define GRAY 1
+#define BLACK 2
+#define NIL -1
+
+int time; // Global variable for timestamp
+
+// Recursive function: perform DFS on a single component of Graph
+void DFS_Visit(Graph& G, int u, std::vector<int>& color, std::vector<int>& pi, std::vector<int>& d, std::vector<int>& f) {
+    time = time + 1; // vertex (u) first discovered: increase global time
+    d[u] = time; // discovery time of vertex (u)
+    color[u] = GRAY; // color: discovered, search in progress (GRAY)
+
+    // Explore each adjacent vertex of u
+    for (int v : G.adj[u]) {
+        if (color[v] == WHITE) { // check: vertex (v) undiscovered
+            pi[v] = u; // predecessor|parent of v: u
+            // Recursive Call
+            DFS_Visit(G, v, color, pi, d, f); // DFS_Visit for vertex (v)
+        }
+    }
+
+    time = time + 1;
+    f[u] = time;
+    color[u] = BLACK;
+}
+
+// Depth-First Search
+void DFS(Graph& G) {
+
+    // Initialization of all vertices in Graph G
+    std::vector<int> color(G.V, WHITE); // color: undiscovered (WHITE)
+    std::vector<int> pi(G.V, NIL); // predecessor|parent in DFS tree: none (NIL)
+    std::vector<int> d(G.V, 0); // discovery time of each vertex: 0
+    std::vector<int> f(G.V, 0); // finish time of each vertex: 0
+
+    time = 0; // global time: 0
+
+    // Iteration over each (undiscovered) vertex in Graph
+    for (int u = 0; u < G.V; u++) {
+        if (color[u] == WHITE) { // check: vertex (u) undiscovered
+            // start DFS for the component containing u
+            DFS_Visit(G, u, color, pi, d, f);
+        }
+    }
+}
