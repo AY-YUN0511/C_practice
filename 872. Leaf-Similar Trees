@@ -1,0 +1,57 @@
+# https://leetcode.com/problems/leaf-similar-trees/?envType=study-plan-v2&envId=leetcode-75
+# 872. Leaf-Similar Trees
+
+//case 2에서 틀리는 코드
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+int* leaf(struct TreeNode* root) {
+    int ans1[200]={-1};
+    int count = 0;
+    //ans1은 leaf node의 배열을 저장, 최대 range 인 200으로 지정
+    if (root) {        
+        if (root->left == NULL && root->right == NULL){           
+            ans1[count] = root->val;
+            count = count+1;
+        }
+        return ans1;
+    }
+    return NULL;
+}
+    
+
+bool leafSimilar(struct TreeNode* root1, struct TreeNode* root2) {
+    int* leaf1 = leaf(root1);
+    int* leaf2 = leaf(root2);
+
+    if (leaf1 == NULL && leaf2 == NULL) {
+        return true; // Both trees are empty or have the same leaf values
+    } else if (leaf1 != NULL && leaf2 != NULL){
+        int i=0;
+        while(leaf1[i]!=-1 && leaf2[i] != -1){
+            if (leaf1[i]==leaf2[i]){
+                i++;
+                continue;//의심구역
+            }
+            else {
+                free(leaf1);
+                free(leaf2);
+                return false;
+            }
+        }
+        free(leaf1);
+        free(leaf2);
+        return true;
+     
+    }
+    else{
+        return false;
+    }
+    return false;//없어도됨!!
+    }
