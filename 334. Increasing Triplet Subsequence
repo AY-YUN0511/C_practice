@@ -1,0 +1,27 @@
+# https://leetcode.com/problems/increasing-triplet-subsequence?envType=study-plan-v2&envId=leetcode-75
+# 334. Increasing Triplet Subsequence
+
+bool increasingTriplet(int* nums, int numsSize){
+    long max_num = 2147483648;    
+    long a = max_num;
+    long b = max_num;
+    long c = max_num;
+    //2^10 = 1024니까 대충 2^30 = 10^3^3이라고 친다
+    for (int i=0;i<numsSize;i++){
+        if (nums[i]<=a){
+            a = nums[i];
+        }//제일 작으면 여기서 걸림
+        else if (nums[i]<=b){
+            b = nums[i];
+        }//a보다 큰데 b보다 작으면 걸림
+        else if (nums[i]<=c){
+            c = nums[i];
+        }
+        if (a != max_num && b!= max_num && c!=max_num ){
+            return true;
+        }//a<b<c인 관계가 생겼으면 true를 return한다
+        
+    }
+    return false;
+    
+}
