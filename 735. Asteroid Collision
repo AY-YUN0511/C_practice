@@ -1,0 +1,68 @@
+# https://leetcode.com/problems/asteroid-collision/?envType=study-plan-v2&envId=leetcode-75
+# 735. Asteroid Collision
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
+    int a = asteroidsSize;
+    int *temp = (int *)malloc((a+1)* sizeof(int));
+    
+    
+    temp[0] = asteroids[0];//일단 하나 넣어준다.
+    int num = 0; //answer에 있는 마지막 원소의 index
+
+    for (int i=1;i<a;i++){ //i는 asteroids의 index
+        if (num==-1 || temp[num]*asteroids[i]>0){
+            temp[num+1] = asteroids[i];
+            num++;
+        }//temp에 값이 하나도 없거나, 두 값을 곱해서 0보다 크면 두 값의 부호가 같은거니까 그냥 추가한다.
+
+        else if (temp[num]<0 && asteroids[i]>0){ // - / + 면 collision 아님
+            temp[num+1] = asteroids[i];
+            num++;
+        }
+        else if (temp[num]>0 && asteroids[i]<0){//부호가 다르면 collision -> + / - 인 경우만 collision인듯!!
+
+             //1)temp[num]과 asteroids[i] 비교 
+                if (abs(temp[num])<abs(asteroids[i])){
+                    temp[num] = asteroids[i];
+                    }//asteroids가 더 크면 answer[num]을 바꿔준다.
+                else if(abs(temp[num])==abs(asteroids[i])){      
+                    num = num-1;
+                    //break;
+                    //temp에 있던 값을 지우고 가장 마지막 숫자는 num -1 번째 자리
+                }
+                //else 원래 있던 값이 크면 아무일도 하지 않는다.
+                 
+            
+            // 2) 이전값과의 부호가 다를 경우에는 계속 비교해야함(+/-)
+            while( num>0 && temp[num-1]*temp[num]<0&& temp[num-1]>0){
+                if (temp[num-1]>0 && abs(temp[num-1])<abs(temp[num])){
+                    temp[num-1] = temp[num];
+                    num = num-1;
+                    }//num이 더 크면 num-1의 위치로 온다
+                else if(abs(temp[num-1])==abs(temp[num])){      
+                    num = num-2;
+                    //전부 지우고 가장 마지막 숫자는 num-2번째 자리
+                }
+                else if(temp[num-1]>0 && abs(temp[num-1])>abs(temp[num])){                    
+                    num = num-1;    
+                } //원래 있던 값이 크면 num을 없앤다. 가장 마지막 숫자는 num-1번째 자리
+                
+            }
+        }
+        }
+
+    if(num==-1){
+        free(temp);
+        *returnSize = 0;
+        return NULL;
+        }
+    else {
+        *returnSize = num+1;
+        return temp;
+    }
+    
+    
+    }
