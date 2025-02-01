@@ -1,0 +1,42 @@
+# https://leetcode.com/problems/max-consecutive-ones-iii?envType=study-plan-v2&envId=leetcode-75
+# 1004. Max Consecutive Ones III
+
+int longestOnes(int* nums, int numsSize, int k) {
+    int max_num = 0;
+
+    int start = 0;
+    int end =0;
+    int zero = 0;
+
+    if(k>=numsSize){
+        return numsSize;
+    }//만약에 k가 numsSize보다 크면 0을 다 1로 만들 수 있으니까 numsSize를 return
+
+    else{
+        while(zero<k && end<numsSize ){
+            if (nums[end]==0 && end<numsSize){
+                zero ++;
+                end++;
+            }//0이면 zero의 개수 증가, end 증가
+            else{
+                end++;
+            }//1이면 end만 증가
+        }//initialization 
+        //0의 개수가 k개가 되면 sliding window 시작
+        max_num = end-start; //이 때의 크기를 max_num으로 지정해둔다 
+
+        for (int i=end;i<numsSize;i++){
+            if (nums[i]==0){//1이면 그냥 넘어가면 되니까 0일때만 생각
+                while(nums[start]!=0 && start<i){
+                    start++;
+                }//nums[start]가 0이 될때까지 start를 증가시킨다
+            start++;
+            }
+            int temp = i-start+1;
+            if (temp>max_num){
+                max_num = temp;
+            }
+        }
+        return max_num;
+        }
+}
