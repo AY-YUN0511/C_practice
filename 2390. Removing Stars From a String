@@ -1,0 +1,20 @@
+# https://leetcode.com/problems/removing-stars-from-a-string/?envType=study-plan-v2&envId=leetcode-75
+# 2390. Removing Stars From a String
+
+char *removeStars(char *s) {
+    int a = strlen(s);
+    char *answer = (char *)malloc((a + 1) * sizeof(char)); // Allocate memory for answer (+1 for null terminator)
+    int num = 0;
+    for (int i = 0; i < strlen(s); i++) {
+        if (s[i] != '*') {//*이면 해당 s[i]를 answer에 추가한다
+            answer[num] = s[i];
+            num++;
+        } else {//*이 아니면 지워야하니까 answer에 해당하는 index를 다시 앞으로 가져온다.
+            num--;
+        }
+    }
+
+    answer[num] = '\0'; // Null-terminate the answer string
+
+    return answer;
+}
