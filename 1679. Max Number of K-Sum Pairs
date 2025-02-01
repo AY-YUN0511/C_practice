@@ -1,0 +1,36 @@
+# https://leetcode.com/problems/max-number-of-k-sum-pairs/description/?envType=study-plan-v2&envId=leetcode-75
+# 1679. Max Number of K-Sum Pairs
+
+#include <stdio.h>
+
+int compare(const void * a, const void * b) {
+    return (*(int *) a) - (*(int *) b);
+} //sort 를 위해 필요한 코드,,, 무슨 말인지는 ,, 모르겠음,,,
+
+int maxOperations(int* nums, int numsSize, int k){
+    int result = 0;
+    int start = 0;
+    int end = numsSize -1;
+    qsort(nums, numsSize, sizeof(int), compare);
+    // sorting이 된답니다...
+    
+    while (start<end && start<numsSize -1 && end>0){
+        if (nums[start]+nums[end]==k){
+            nums[start] = 0;
+            nums[end] = 0;
+            result = result + 1;
+            start = start + 1;
+            end = end -1;
+        }//같으면 안으로 한칸씩 들어오기
+
+        else if (nums[start]+nums[end]>k){
+            end = end-1;
+        } //더했을때 k보다 크면 큰 수인 end만 1 감소
+
+        else if (nums[start]+nums[end]<k){
+            start = start + 1;
+        } //더했을때 k보다 작으면 작은 수인 start만 1 증가
+    }
+    return result;
+
+}
