@@ -1,0 +1,79 @@
+# https://leetcode.com/problems/delete-node-in-a-bst/?envType=study-plan-v2&envId=leetcode-75
+# 450. Delete Node in a BST
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/*
+수업시간에 한 코드를 그대로 c로 바꾸기만 했어용
+def __deleteHelp(self, curNode: TreeNode, x: int) -> TreeNode:
+        #(1) Base case
+        if not curNode:
+            return None
+        #(2) Recursive case
+        if x<curNode.val:
+            curNode.left = self.__deleteHelp(curNode.left, x)
+        elif x>curNode.val:
+            curNode.right = self.__deleteHelp(curNode.right, x)
+        else: 
+            #(1) No child
+            if curNode.left == None and curNode.right == None:
+                return None
+            #(2) One child
+            elif curNode.left == None and curNode.right:
+                return curNode.right
+            elif curNode.left and curNode.right == None:
+                return curNode.left
+            #(3) Two children
+            else:
+                leftLargest = self.__findMax(curNode.left)
+                curNode.left = self.__deleteHelp(curNode.left, leftLargest)
+                curNode.val = leftLargest
+*/
+
+
+struct TreeNode* findMax(struct TreeNode* node) {
+    while (node->right) {
+        node = node->right;
+    }
+    return node;
+}
+
+struct TreeNode* deleteNode(struct TreeNode* root, int key) {
+    if (!root) {
+        return NULL;  // base case
+    }
+
+    // recursive case
+    if (key < root->val) {
+        root->left = deleteNode(root->left, key);  
+    } else if (key > root->val) {
+        root->right = deleteNode(root->right, key);  
+    } else {
+
+        if (!root->left) {
+            // Case 1: No child
+            struct TreeNode* temp = root->right;
+            free(root);
+            return temp;
+        } else if (!root->right) {
+            // Case 2: One child
+            struct TreeNode* temp = root->left;
+            free(root);
+            return temp;
+        } else {
+            // Case 3: Two children. 
+            struct TreeNode* temp = findMax(root->left);
+            root->val = temp->val; 
+            root->left = deleteNode(root->left, temp->val);  
+        }
+    }
+    return root;
+}
