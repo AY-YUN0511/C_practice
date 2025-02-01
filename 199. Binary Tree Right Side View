@@ -1,0 +1,48 @@
+# https://leetcode.com/problems/binary-tree-right-side-view/?envType=study-plan-v2&envId=leetcode-75
+# 199. Binary Tree Right Side View
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int maxDepth(struct TreeNode* root) {
+    if (!root)
+        return 0;
+
+    int leftDepth = maxDepth(root->left);
+    int rightDepth = maxDepth(root->right);
+
+    return (leftDepth > rightDepth) ? (leftDepth + 1) : (rightDepth + 1);
+} //depth 가 필요해서 예전에 했던 함수를 가져왔음
+
+
+void rightSideViewUtil(struct TreeNode* root, int* result, int* returnSize, int level) {
+    if (!root)
+        return;
+
+    // If this is the first node encountered at the current level, add it to the result.
+    if (*returnSize == level)
+        result[(*returnSize)++] = root->val;
+    //GPT Help ^^
+
+    rightSideViewUtil(root->right, result, returnSize, level + 1);
+    rightSideViewUtil(root->left, result, returnSize, level + 1);
+} //오른쪽을 먼저가고 없으면 왼쪽을 탐색하게 됨
+
+int* rightSideView(struct TreeNode* root, int* returnSize) {
+    *returnSize = 0; //initialize. rightsideviewutil 에서 update됨
+    int depth = maxDepth(root);
+
+    int* result = (int*)malloc(depth * sizeof(int));
+
+    rightSideViewUtil(root, result, returnSize, 0);
+
+    return result;
+}
